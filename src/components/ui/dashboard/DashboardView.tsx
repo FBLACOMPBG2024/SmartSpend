@@ -118,7 +118,9 @@ export default function DashboardView({ user }: DashboardViewProps) {
             Latest Transactions
           </h2>
           {transactions.length === 0 ? (
-            <div className="text-text">No transactions found.</div>
+            <a href="#profile" className="text-text">
+              No transactions found. Click here to connect a bank account
+            </a>
           ) : (
             <ul>
               {transactions.slice(0, 6).map((transaction, index) => (
