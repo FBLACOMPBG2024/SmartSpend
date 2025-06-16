@@ -30,7 +30,7 @@ export const lineChartOptions = (labels: string[], data: number[]) => ({
             stack: "Total",
             areaStyle: {},
             emphasis: { focus: "series" },
-            data: data.length ? data : [120, 132, 101, 134, 90, 230, 210],
+            data: data.length ? data : [0, 0, 0, 0, 0, 0, 0],
         },
     ],
 });

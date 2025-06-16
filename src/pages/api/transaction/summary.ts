@@ -71,6 +71,11 @@ async function getSpendingData(req: NextApiRequest, res: NextApiResponse) {
         spending[day] += Math.abs(tx.value);
       });
 
+      // Ensure the data is rounded to two decimal places
+      for (let i = 0; i < spending.length; i++) {
+        spending[i] = Math.round(spending[i] * 100) / 100;
+      }
+
       return res.status(200).json({ labels: weekday, data: spending, summary });
     }
 
@@ -95,6 +100,11 @@ async function getSpendingData(req: NextApiRequest, res: NextApiResponse) {
     });
 
     const data = labels.map((label) => weekMap[label]);
+
+    // Ensure the data is rounded to two decimal places
+    for (let i = 0; i < data.length; i++) {
+      data[i] = Math.round(data[i] * 100) / 100;
+    }
 
     return res.status(200).json({ labels, data, summary });
   } catch (error) {
@@ -136,6 +146,11 @@ async function getSpendingSummary(userId: string) {
     if (d >= last7) last7days += absVal;
     if (d >= last30) last30days += absVal;
   });
+
+  // Ensure the values are rounded to two decimal places
+  today = Math.round(today * 100) / 100;
+  last7days = Math.round(last7days * 100) / 100;
+  last30days = Math.round(last30days * 100) / 100;
 
   return { today, last7days, last30days };
 }

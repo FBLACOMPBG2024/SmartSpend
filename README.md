@@ -1,39 +1,56 @@
 # SmartSpend
 
-SmartSpend is a Next.js-based web application designed to help users manage their spending and personal finances. The platform is intuitive and user-friendly, making it ideal for students, though anyone can benefit from its features.
+SmartSpend is a personal finance tracker built with Next.js, tailored for students but useful for anyone looking to gain control over their finances. It offers a clean interface, smooth user experience, and strong security features to help users track income, expenses, and account balances efficiently.
 
-## Features
+## ✨ Features
 
-- **Transaction Management**: Easily create, edit, delete, and tag transactions for better organization and filtering.
-- **User Authentication**: Secure Google OAuth2 integration for a seamless login experience.
-- **Enhanced Security**: Encrypted passwords using Argon2 for robust user data protection.
-- **Account Recovery**: Simple email-based password reset functionality.
+- **Transaction Management**: Add, edit, delete, and tag transactions for easy filtering and insights.
+- **Google Authentication**: Secure OAuth2 login with Google for a seamless sign-in experience.
+- **Encrypted Passwords**: User credentials are protected using Argon2 hashing for enhanced security.
+- **Account Recovery**: Email-based password reset to help users regain access quickly.
+- **Real-Time Balance Updates**: Track your available funds as transactions are added or removed.
+- **Custom Tags**: Organize spending using personalized categories for better budgeting.
 
-## Technologies Used
+## 🛠 Technologies Used
 
-- **Next.js**: A React framework for building fast and scalable web applications.
-- **TailwindCSS**: For efficient and responsive styling.
-- **TypeScript**: Ensuring type safety and improved code quality.
+- **Next.js** – Framework for fast, production-grade React apps  
+- **Tailwind CSS** – Utility-first styling for responsive UI  
+- **TypeScript** – Strongly typed codebase for fewer runtime errors  
+- **Zod** – Schema validation for clean and type-safe form handling  
+- **Iron Session** – Streamlined authentication integration  
+- **MongoDB** – Fast and scalable database access
 
-## How to Use
+## 📦 Getting Started Locally
 
-Simply visit the SmartSpend website, create an account, and start managing your finances.
+1. Clone the repository and install dependencies:
+   ```bash
+   npm install
+   ```
 
-## How to run locally
+2. Create a `.env` file based on `.env.example` and fill in the required values.
 
-1. Install all dependencies using `npm install i`
-2. Create a local `.env` file and fill out following the `.env.example` file
-3. Run the application using `npm run dev`
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-## Future Plans
+4. Visit `http://localhost:3000` to view the app.
 
-- **PayPal Integration**: Allowing users to link their PayPal accounts for seamless transaction tracking.
+## 🌐 Deployment
 
-## Acknowledgments
+SmartSpend is hosted on **GitHub** and can be deployed easily using platforms like Vercel or Netlify.
 
-- **Aceternity UI**: For providing templates that inspired the design.
-- **Auth.js**: For their excellent documentation, which was very helpful in implementing secure authentication.
+## 📅 Future Roadmap
 
-## License
+- **PayPal Integration** – Connect PayPal accounts for automatic syncing of transactions  
+- **Spending Insights** – Visual breakdown of expenses by tag or time period  
+- **Budget Goals** – Set limits for categories and track progress  
 
-This project is currently not licensed.
+## 🙏 Acknowledgments
+
+- **Aceternity UI** – For design inspiration and starter components  
+- **Auth.js Docs** – For clear, helpful authentication guidance
+
+## 📝 License
+
+This project is currently **not licensed**. All rights reserved.
