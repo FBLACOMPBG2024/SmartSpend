@@ -16,6 +16,7 @@ import {
   treemapChartOptions,
 } from "@/utils/chartOptions";
 import { Transaction } from "@/schemas/transactionSchema";
+import { IconDownload } from "@tabler/icons-react";
 
 interface DashboardViewProps {
   user: IUser;
@@ -67,15 +68,32 @@ export default function DashboardView({ user }: DashboardViewProps) {
         {/* Dashboard Header */}
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
           <h1 className="text-4xl font-black text-text">Dashboard</h1>
-          <select
-            className="bg-backgroundGrayLight p-2 text-base rounded-md"
-            value={dateRange}
-            onChange={(e) => setDateRange(e.target.value)}
-          >
-            <option value="last7days">Last Week</option>
-            <option value="last30days">Last Month</option>
-            <option value="last90days">Last 3 Months</option>
-          </select>
+
+          <div className="flex items-center gap-4">
+            <div
+              className="sm:max-h-10 max-h-10 transition-all duration-200 hover:opacity-80 sm:text-lg text-sm px-2 py-1 bg-primary text-white rounded flex items-center"
+              onClick={() => {
+                const link = document.createElement("a");
+                link.href = `/api/export/transaction?range=${dateRange}`;
+                link.download = `transactions_${dateRange}.csv`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }}
+            >
+              <IconDownload className="mr-2" />
+              <a className="cursor-pointer">Export Transactions</a>
+            </div>
+            <select
+              className="bg-backgroundGrayLight cursor-pointer p-2 text-base rounded-md"
+              value={dateRange}
+              onChange={(e) => setDateRange(e.target.value)}
+            >
+              <option value="last7days">Last Week</option>
+              <option value="last30days">Last Month</option>
+              <option value="last90days">Last 3 Months</option>
+            </select>
+          </div>
         </div>
 
         {/* Summary Panel */}
@@ -83,11 +101,7 @@ export default function DashboardView({ user }: DashboardViewProps) {
           <SummaryBox title="Today" amount={summary?.today ?? 0} />
           <SummaryBox title="Last 7 Days" amount={summary?.last7days ?? 0} />
           <SummaryBox title="Last 30 Days" amount={summary?.last30days ?? 0} />
-          <SummaryBox
-            title="Balance"
-            amount={summary?.balance ?? user.balance ?? 0}
-            highlight
-          />
+          <SummaryBox title="Balance" amount={user.balance ?? 0} highlight />
         </div>
 
         {/* Chart Grid */}

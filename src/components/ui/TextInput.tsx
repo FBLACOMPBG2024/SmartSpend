@@ -1,8 +1,7 @@
 import React, { ReactNode } from "react";
 import clsx from "clsx";
 
-// A reusable text input component.
-// It allows user input with customizable properties like placeholder, value, and description.
+// TextInput - customizable input field with optional label and description.
 
 interface TextInputProps {
   children?: ReactNode;
@@ -20,14 +19,14 @@ interface TextInputProps {
 export default function TextInput({
   children,
   className,
-  type = "text", // Default to 'text' type if not provided
+  type = "text",
   placeholder,
   value,
   onChange,
   onKeyDown,
   name,
   description,
-  required = false, // Default to false if 'required' is not provided
+  required = false,
 }: TextInputProps) {
   return (
     <div
@@ -36,6 +35,7 @@ export default function TextInput({
         className
       )}
     >
+      {/* Label if a name is provided */}
       {name && (
         <label
           htmlFor={name}
@@ -44,6 +44,8 @@ export default function TextInput({
           {name}
         </label>
       )}
+
+      {/* Main input field */}
       <input
         id={name}
         type={type}
@@ -54,9 +56,13 @@ export default function TextInput({
         required={required}
         className="bg-transparent outline-none w-full mt-1"
       />
+
+      {/* Optional description below the input */}
       {description && (
         <p className="mt-1 text-sm text-neutral-500">{description}</p>
       )}
+
+      {/* Any extra elements passed in */}
       {children}
     </div>
   );

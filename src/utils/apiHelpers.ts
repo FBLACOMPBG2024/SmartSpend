@@ -1,9 +1,14 @@
+// utils/apiHelpers.ts
+
 import api from "@/utils/api";
 import { Transaction } from "@/schemas/transactionSchema";
 import { Goal } from "@/schemas/goalSchema";
 import { IUser } from "@/components/context/UserContext";
 import Router from "next/router";
 import { showError, showSuccess } from "./toast";
+
+// Utility: round float to 2 decimals
+const roundTo2 = (num: number): number => Math.round(num * 100) / 100;
 
 export const fetchTransactions = async (
   setTransactions: (transactions: Transaction[]) => void,
@@ -14,13 +19,10 @@ export const fetchTransactions = async (
   try {
     setLoading(true);
 
-    const endDate = new Date(); // now
+    const endDate = new Date();
     const startDate = new Date();
 
     switch (dateRange) {
-      case "last7days":
-        startDate.setDate(endDate.getDate() - 7);
-        break;
       case "last30days":
         startDate.setDate(endDate.getDate() - 30);
         break;
@@ -40,7 +42,12 @@ export const fetchTransactions = async (
       },
     });
 
-    setTransactions(response.data);
+    setTransactions(
+      response.data.map((tx: Transaction) => ({
+        ...tx,
+        value: roundTo2(tx.value),
+      }))
+    );
   } catch (error) {
     console.error("Error fetching transactions:", error);
     setError("Failed to fetch transactions.");
@@ -70,11 +77,17 @@ export const fetchDashboardData = async (
 
     if (response.status === 200) {
       const { labels, data, summary } = response.data;
+
       setChartLabels(labels);
-      setChartData(data);
+      setChartData(data.map((d: number) => roundTo2(d)));
 
       if (setSummary && summary) {
-        setSummary(summary);
+        setSummary({
+          today: roundTo2(summary.today),
+          last7days: roundTo2(summary.last7days),
+          last30days: roundTo2(summary.last30days),
+          balance: roundTo2(summary.balance),
+        });
       }
     }
   } catch (error) {
@@ -85,10 +98,14 @@ export const fetchDashboardData = async (
   }
 };
 
-export const fetchGoals = async (): Promise<any> => {
+export const fetchGoals = async (): Promise<Goal[]> => {
   try {
     const response = await api.get("/api/user/goal/get");
-    return response.data;
+    return response.data.map((goal: Goal) => ({
+      ...goal,
+      target: roundTo2(goal.target),
+      progress: roundTo2(goal.progress),
+    }));
   } catch (error) {
     console.error("Error fetching goals:", error);
     throw new Error("Failed to fetch goals. Please try again later.");
@@ -97,7 +114,12 @@ export const fetchGoals = async (): Promise<any> => {
 
 export const createGoal = async (goal: Goal): Promise<any> => {
   try {
-    const response = await api.post("/api/user/goal/create", goal);
+    const goalToSend = {
+      ...goal,
+      target: roundTo2(goal.target),
+      progress: roundTo2(goal.progress),
+    };
+    const response = await api.post("/api/user/goal/create", goalToSend);
     return response.data;
   } catch (error) {
     console.error("Error creating goal:", error);
@@ -107,7 +129,12 @@ export const createGoal = async (goal: Goal): Promise<any> => {
 
 export const editGoal = async (goal: Goal): Promise<any> => {
   try {
-    const response = await api.put("/api/user/goal/edit", goal);
+    const goalToSend = {
+      ...goal,
+      target: roundTo2(goal.target),
+      progress: roundTo2(goal.progress),
+    };
+    const response = await api.put("/api/user/goal/edit", goalToSend);
     if (response.status === 200) {
       await Router.reload();
     }
@@ -134,7 +161,7 @@ export const connectBankAccount = async (
   accessToken: string
 ): Promise<void> => {
   try {
-    let response = await api.post("/api/user/bank-connect", { accessToken });
+    const response = await api.post("/api/user/bank-connect", { accessToken });
 
     if (response.status === 200) {
       showSuccess("Connected bank account");
