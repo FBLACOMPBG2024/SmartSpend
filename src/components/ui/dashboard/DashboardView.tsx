@@ -101,7 +101,7 @@ export default function DashboardView({ user }: DashboardViewProps) {
           <SummaryBox title="Today" amount={summary?.today ?? 0} />
           <SummaryBox title="Last 7 Days" amount={summary?.last7days ?? 0} />
           <SummaryBox title="Last 30 Days" amount={summary?.last30days ?? 0} />
-          <SummaryBox title="Balance" amount={user.balance ?? 0} highlight />
+          <SummaryBox title="Balance" amount={user.balance ?? summary?.balance ?? 0} highlight />
         </div>
 
         {/* Chart Grid */}

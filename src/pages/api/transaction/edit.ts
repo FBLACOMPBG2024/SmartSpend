@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 import { getIronSession } from "iron-session";
 import { sessionOptions } from "@/utils/sessionConfig";
 import { SessionData } from "@/utils/sessionData";
-import TransactionSchema from "@/schemas/transactionSchema";
+import TransactionSchema, { parseTransaction } from "@/schemas/transactionSchema";
 import { captureEvent } from "@/utils/posthogHelper";
 
 // Utility to pull user info from session
@@ -39,7 +39,7 @@ async function createTransaction(req: NextApiRequest, res: NextApiResponse) {
   if (!user) return res.status(401).json({ message: "Unauthorized" });
 
   try {
-    const parsed = TransactionSchema.parse(req.body);
+    const parsed = parseTransaction(req.body);
     const { value, tags, name, description } = parsed;
 
     const transaction = {

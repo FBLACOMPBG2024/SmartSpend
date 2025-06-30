@@ -59,8 +59,8 @@ export default function ProfileView({ user }: ProfileViewProps) {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [email, setEmail] = useState(user.email);
-  const [theme, setTheme] = useState(user.preferences.theme || "system");
-  const [accountId, setAccountId] = useState(user.preferences.accountId);
+  const [theme, setTheme] = useState(user.preferences?.theme || "system");
+  const [accountId, setAccountId] = useState(user.preferences?.accountId);
   const [bankAccounts, setBankAccounts] = useState<BankAccount[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -136,11 +136,8 @@ export default function ProfileView({ user }: ProfileViewProps) {
           <h1 className="text-4xl font-black text-text">Profile</h1>
           <button
             onClick={() => {
-              if (user.bankAccessToken || tellerCompleted) {
-                driverObj.drive();
-              } else {
-                showWarning("Please finish connecting your bank first.");
-              }
+              driverObj.drive();
+
             }}
             className="text-sm text-primary underline flex items-center gap-1"
           >
@@ -229,11 +226,10 @@ export default function ProfileView({ user }: ProfileViewProps) {
           </button>
           <button
             id="save-button"
-            className={`text-lg rounded-md shadow-md py-2 px-6 ${
-              loading
-                ? "bg-backgroundGray"
-                : "bg-backgroundGrayLight hover:bg-backgroundGray"
-            }`}
+            className={`text-lg rounded-md shadow-md py-2 px-6 ${loading
+              ? "bg-backgroundGray"
+              : "bg-backgroundGrayLight hover:bg-backgroundGray"
+              }`}
             onClick={handleSave}
             disabled={loading}
           >
